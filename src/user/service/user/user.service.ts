@@ -11,16 +11,19 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
- async createUser(payload: TCreateUser) {
-
+  async createUser(payload: TCreateUser) {
     // DEFINED NUMBER OF REPETITIONS TO HASH PASSWORD
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(payload.password, saltRounds);
     const user = this.userRepository.create({
       ...payload,
-      password:hashedPassword,
+      password: hashedPassword,
       created_at: new Date(),
     });
     return this.userRepository.save(user);
+  }
+
+  deleteUser(id: number) {
+    return this.userRepository.delete({ id });
   }
 }
