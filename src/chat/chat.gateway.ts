@@ -1,10 +1,17 @@
-import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  MessageBody,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { AddMessageDto } from './dto/add-message.dto';
 
 @WebSocketGateway({ cors: { origin: '*' } })
-export class ChatGateway implements OnGatewayConnection,OnGatewayDisconnect {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
@@ -13,7 +20,10 @@ export class ChatGateway implements OnGatewayConnection,OnGatewayDisconnect {
   @SubscribeMessage('chat') // subscribe to chat event messages
   handleMessage(@MessageBody() payload: AddMessageDto): AddMessageDto {
     // console.log(`Message received: ${JSON.stringify(payload.author)} - ${payload.body}`);
-    const valueSendChat = { author: {id:2,name:'Ronaldo'}, body: 'TAO Chào mày' }
+    const valueSendChat = {
+      author: { id: 2, name: 'Ronaldo' },
+      body: 'TAO Chào mày',
+    };
     this.server.emit('chat', valueSendChat); // broadbast a message to all clients
     return payload; // return the same payload data
   }

@@ -1,4 +1,4 @@
 export class AddMessageDto {
-    author: string;
-    body: string;
-  }
+  author: string;
+  body: string;
+}
